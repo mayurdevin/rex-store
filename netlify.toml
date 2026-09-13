@@ -4,15 +4,22 @@
 
 [functions]
   node_bundler = "esbuild"
-  # Included files for functions (none needed — fetch is native)
+  # Ensure latest code is bundled; include all function files
+  included_files = ["netlify/functions/**"]
+  # Keep external modules bundled (no external_node_modules needed — we use only builtins + fetch)
 
-# API CORS headers for functions
+[build.environment]
+  NODE_VERSION = "20"
+  AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
+
+# API CORS headers for functions — also handled inside function, but set here for OPTIONS
 [[headers]]
   for = "/.netlify/functions/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Headers = "Content-Type, x-publish-key"
+    Access-Control-Allow-Headers = "Content-Type, x-publish-key, Authorization"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Max-Age = "86400"
 
 [[headers]]
   for = "/data/*"
@@ -20,9 +27,5 @@
     Access-Control-Allow-Origin = "*"
     Cache-Control = "public, max-age=300"
 
-# No SPA fallback — we use real files for / and /app.html and /publish/
-# If you want SPA-style routes, add explicit redirects below
-# [[redirects]]
-#   from = "/app/*"
-#   to = "/app.html"
-#   status = 200
+# Do not use SPA fallback — real files handle routing
+# Custom 404 will be served automatically
