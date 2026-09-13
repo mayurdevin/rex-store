@@ -315,6 +315,9 @@ async function handler(event, context) {
     const ct = getHeader(event.headers, "content-type") || "";
     const isMultipart = ct.toLowerCase().includes("multipart/form-data");
 
+    let providedId = "";
+    let featuredRaw = null;
+
     if (isMultipart) {
       console.log("[publish] detected multipart/form-data, parsing...");
       try {
@@ -330,6 +333,7 @@ async function handler(event, context) {
       const f = parsedMultipart.fields || {};
       const fl = parsedMultipart.files || {};
 
+      providedId = (f.id || "").trim();
       name = (f.name || f.appName || "").trim();
       version = (f.version || "").trim();
       category = (f.category || "").trim();
@@ -337,6 +341,7 @@ async function handler(event, context) {
       description = (f.description || "").trim();
       whatsNew = (f.whatsNew || f.whats_new || "").trim();
       size = (f.size || "").trim();
+      featuredRaw = f.featured;
 
       // files
       // APK field may be 'apk', 'apkFile', 'file' — try common names
@@ -402,6 +407,7 @@ async function handler(event, context) {
       }
       console.log("[publish] JSON payload keys:", Object.keys(payload));
 
+      providedId = (payload.id || "").trim();
       name = (payload.name || "").trim();
       version = (payload.version || "").trim();
       category = (payload.category || "").trim();
@@ -409,6 +415,7 @@ async function handler(event, context) {
       description = (payload.description || "").trim();
       whatsNew = (payload.whatsNew || "").trim();
       size = (payload.size || "").trim();
+      featuredRaw = payload.featured;
 
       const apkBase64 = payload.apkBase64;
       apkFileName = payload.apkFileName || "app.apk";
@@ -472,10 +479,11 @@ async function handler(event, context) {
       console.warn("[publish] APK does not start with PK header — may not be valid ZIP, continuing");
     }
 
-    const id = slugify(name);
+    // Allow explicit id for edit flows (keeps slug stable when name changes); otherwise slugify name
+    const id = providedId ? slugify(providedId) : slugify(name);
     const cleanVersion = sanitizeVersion(version);
     const tag = `${id}-v${cleanVersion}`;
-    console.log(`[publish] slug id=${id} tag=${tag}`);
+    console.log(`[publish] id=${id} (provided=${!!providedId}) tag=${tag}`);
 
     // ---------- GitHub operations ----------
     try {
@@ -603,6 +611,12 @@ async function handler(event, context) {
       const existingIdx = apps.findIndex((a) => a.id === id);
       const existing = existingIdx >= 0 ? apps[existingIdx] : null;
 
+      // Featured handling: respect provided flag if present, else keep existing or false
+      let featured = existing?.featured ?? false;
+      if (featuredRaw !== null && featuredRaw !== undefined && featuredRaw !== "") {
+        if (typeof featuredRaw === "string") featured = featuredRaw === "true" || featuredRaw === "1" || featuredRaw.toLowerCase() === "on";
+        else featured = !!featuredRaw;
+      }
       const newApp = {
         id,
         name: String(name).trim(),
@@ -615,7 +629,7 @@ async function handler(event, context) {
         screenshots: screenshotUrls.length ? screenshotUrls : existing?.screenshots || [],
         apkUrl,
         size: computedSize,
-        featured: existing?.featured ?? false,
+        featured,
         updatedAt: now,
       };
 

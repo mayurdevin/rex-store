@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0a0a0f" />
-  <title>Rex Store — Publish</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#ffffff" />
+  <title>Rex Store — Publish Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;750;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
@@ -16,6 +16,7 @@
         <div class="brand-text"><strong>Rex Store</strong><span>Publish Dashboard</span></div>
       </a>
       <div class="header-actions">
+        <span id="manageCount" class="pill" style="display:none"></span>
         <a class="btn btn-ghost btn-small" href="/">← Store</a>
       </div>
     </div>
@@ -24,8 +25,13 @@
   <main class="container publish">
     <div class="publish-hero">
       <span class="badge">Private • GitHub Releases • Server-side token</span>
-      <h1>Publish an app to Rex Store</h1>
-      <p>Upload your APK → we create a GitHub Release, attach the APK as an asset, upload icons/screenshots, and update <code>apps.json</code>. The store updates automatically. Your <code>GITHUB_TOKEN</code> never leaves the server.</p>
+      <h1>Publish & manage apps</h1>
+      <p>Upload APK → GitHub Release + asset → <code>data/apps.json</code> updates → store shows instantly. Edit metadata without new release, or delete/unpublish and its Release is cleaned up. Token never leaves server.</p>
+    </div>
+
+    <div id="editBanner" class="edit-banner">
+      <span><strong>✎ Editing:</strong> <span id="editName">—</span> <span style="opacity:.7">(<span id="editId"></span>)</span></span>
+      <button type="button" id="cancelEditBtn" class="btn btn-small">Cancel edit</button>
     </div>
 
     <form id="publishForm" class="form-grid" novalidate>
@@ -34,14 +40,14 @@
 
         <div class="field">
           <label for="appName">App name *</label>
-          <input id="appName" name="name" placeholder="e.g. Nova Launcher Prime" required maxlength="60" />
+          <input id="appName" name="name" placeholder="e.g. My App" required maxlength="60" />
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="field">
             <label for="version">Version *</label>
             <input id="version" name="version" placeholder="e.g. 1.0.0" required pattern="^[0-9]+\.[0-9]+\.[0-9]+.*$" />
-            <span class="hint">Semver — tag will be <code>slug-v1.0.0</code></span>
+            <span class="hint" id="versionHint">Semver — new version creates new GitHub Release</span>
           </div>
           <div class="field">
             <label for="category">Category *</label>
@@ -64,17 +70,17 @@
 
         <div class="field">
           <label for="shortDesc">Short description *</label>
-          <input id="shortDesc" name="shortDesc" placeholder="One-line pitch — shows on cards" required maxlength="120" />
+          <input id="shortDesc" name="shortDesc" placeholder="One-line pitch — shown on cards" required maxlength="120" />
         </div>
 
         <div class="field">
           <label for="description">Full description *</label>
-          <textarea id="description" name="description" placeholder="Detailed description for the app detail page…" required maxlength="3000"></textarea>
+          <textarea id="description" name="description" placeholder="Detailed description for detail page…" required maxlength="3000"></textarea>
         </div>
 
         <div class="field">
           <label for="whatsNew">What's New *</label>
-          <textarea id="whatsNew" name="whatsNew" placeholder="• New feature&#10;• Bug fixes&#10;• Performance improvements" required></textarea>
+          <textarea id="whatsNew" name="whatsNew" placeholder="• New feature&#10;• Bug fixes"></textarea>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -84,44 +90,52 @@
           </div>
           <div class="field">
             <label for="publishKey">Publish key (if set)</label>
-            <input id="publishKey" type="password" placeholder="PUBLISH_KEY env var" autocomplete="off" />
-            <span class="hint">Leave empty if not configured</span>
+            <input id="publishKey" type="password" placeholder="PUBLISH_KEY" autocomplete="off" />
           </div>
+        </div>
+
+        <div class="field" id="featuredField" style="display:flex;align-items:center;gap:8px;margin-top:4px">
+          <input id="featured" type="checkbox" style="width:16px;height:16px;accent-color:#0a0a0a" />
+          <label for="featured" style="margin:0;font-weight:600">Featured on homepage</label>
         </div>
       </div>
 
       <div class="card-form">
-        <h3>Files</h3>
+        <h3>Files <span id="fileModeHint" class="hint" style="font-weight:500">— APK stored as Release asset</span></h3>
 
         <div class="field">
-          <label>APK file * <span class="hint">— stored as GitHub Release asset</span></label>
+          <label id="apkLabel">APK file * <span class="hint">— required for new publish</span></label>
           <label class="drop" id="apkDrop">
-            <strong>Drop APK here or click to browse</strong>
-            <span class="hint">.apk only • Netlify Free: ~6 MB limit, Pro: larger</span>
-            <input id="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required />
-            <div id="apkName" class="hint" style="margin-top:8px;color:var(--accent)"></div>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px;opacity:.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+            <strong id="apkDropText">Drop APK here or click to browse</strong>
+            <span class="hint">.apk only • ~6 MB Netlify Free limit</span>
+            <input id="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" />
+            <div id="apkName" class="hint" style="margin-top:10px;font-weight:600;color:var(--text);word-break:break-all"></div>
+            <div id="apkCurrent" class="hint" style="display:none;margin-top:6px;color:var(--muted)"></div>
           </label>
           <div id="apkProgress" class="progress"><div id="apkBar"></div></div>
         </div>
 
         <div class="field">
-          <label>App icon <span class="hint">— PNG/WebP, 512×512 recommended</span></label>
+          <label>App icon <span class="hint">— 512×512 PNG/WebP</span></label>
           <label class="drop" id="iconDrop">
             <strong>Drop icon or click</strong>
-            <span class="hint">Optional — placeholder used if empty</span>
+            <span class="hint">Optional — keep existing if empty when editing</span>
             <input id="iconFile" type="file" accept="image/*" />
           </label>
           <div id="iconPreview" class="preview"><img id="iconPreviewImg" alt="icon preview"/></div>
+          <div id="iconCurrent" class="hint" style="display:none;margin-top:8px;text-align:center;word-break:break-all"></div>
         </div>
 
         <div class="field">
-          <label>Screenshots <span class="hint">— up to 6, PNG/JPG</span></label>
+          <label>Screenshots <span class="hint">— up to 6</span></label>
           <label class="drop" id="shotsDrop">
             <strong>Drop screenshots or click</strong>
-            <span class="hint">Optional — shown as carousel</span>
+            <span class="hint">Replaces existing screenshots when editing if new ones selected</span>
             <input id="shotsFiles" type="file" accept="image/*" multiple />
           </label>
           <div id="shotsPreview" class="screens-preview"></div>
+          <div id="shotsCurrent" class="hint" style="display:none;margin-top:8px"></div>
         </div>
 
         <div id="alertSuccess" class="alert success"></div>
@@ -132,22 +146,50 @@
           <button type="button" id="resetBtn" class="btn btn-ghost">Reset</button>
         </div>
         <div id="progressWrap" class="progress" style="display:none"><div id="progressBar"></div></div>
-        <p class="hint" style="margin-top:10px">Flow: Create Release → Upload APK asset → Upload images → Update <code>data/apps.json</code> → Live on store.</p>
+        <p class="hint" style="margin-top:10px">New app: Publish → Release + asset + <code>apps.json</code>. Edit: updates metadata (new icon/screenshots if provided) without new Release unless version/APK changed.</p>
       </div>
     </form>
 
-    <div class="panel" style="margin-top:14px">
-      <h3>How it works (technical)</h3>
-      <ol style="margin:0;padding-left:18px;color:var(--muted);line-height:1.7;font-size:.88rem">
-        <li>Frontend converts APK/icon/screenshots to base64 and POSTs JSON to <code>/.netlify/functions/publish</code>.</li>
-        <li>Function (server-only) uses <code>GITHUB_TOKEN</code> from env to call GitHub API: <code>POST /repos/:owner/:repo/releases</code> to create a release with tag <code>app-id-vX.Y.Z</code>.</li>
-        <li>Uploads APK binary to <code>https://uploads.github.com/.../assets?name=app.apk</code> — response gives <code>browser_download_url</code>.</li>
-        <li>Uploads icon/screenshots via Contents API to <code>images/apps/&lt;id&gt;/</code> and builds raw URLs.</li>
-        <li>Fetches, merges, and commits updated <code>data/apps.json</code> via Contents API. Next page load shows the app.</li>
-        <li>Token never exposed to browser; all GitHub calls are in the Function.</li>
+    <!-- Manage list -->
+    <section class="manage-section">
+      <div class="manage-head">
+        <h2>Published apps <span id="manageTotal" class="pill" style="margin-left:8px">—</span></h2>
+        <button id="refreshBtn" class="btn btn-ghost btn-small">↻ Refresh</button>
+      </div>
+      <div id="manageList" class="manage-list"></div>
+      <div id="manageEmpty" class="manage-empty" style="display:none">
+        <strong>No apps yet</strong>
+        <p style="margin:6px 0 0">Publish your first app above. Only real publishes appear on the public store — no dummy data.</p>
+      </div>
+      <div id="manageSkeleton" style="display:grid;gap:10px">
+        <div class="skeleton" style="height:64px"></div>
+        <div class="skeleton" style="height:64px"></div>
+      </div>
+    </section>
+
+    <div class="panel" style="margin-top:16px">
+      <h3>How it works</h3>
+      <ol style="margin:0;padding-left:18px;color:var(--muted);line-height:1.7;font-size:.86rem;font-weight:500">
+        <li><strong style="color:var(--text)">Publish:</strong> FormData → <code>/.netlify/functions/publish</code> → create Release <code>slug-v1.0.0</code> → upload APK → upload images → update <code>data/apps.json</code>.</li>
+        <li><strong style="color:var(--text)">Edit:</strong> Same form prefilled → if version/APK changed → new Release; else → <code>/.netlify/functions/update</code> only updates metadata, keeps <code>apkUrl</code>.</li>
+        <li><strong style="color:var(--text)">Delete:</strong> <code>/.netlify/functions/delete</code> → remove GitHub Release + tag → remove from <code>apps.json</code> → disappears from store.</li>
+        <li>Token stays server-side; GitHub is source of truth for APKs.</li>
       </ol>
     </div>
   </main>
+
+  <!-- Confirmation dialog -->
+  <div id="confirmOverlay" class="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="dialog">
+      <h3 id="confirmTitle">Delete app?</h3>
+      <p id="confirmText">This will remove the app from <code>data/apps.json</code> and delete its GitHub Release and tag. Old APK will no longer be downloadable. This cannot be undone.</p>
+      <p id="confirmAppName" style="margin-top:10px;font-weight:700;color:var(--text);word-break:break-all"></p>
+      <div class="dialog-actions">
+        <button id="confirmCancel" class="btn btn-ghost">Cancel</button>
+        <button id="confirmDelete" class="btn btn-danger">Delete & unpublish</button>
+      </div>
+    </div>
+  </div>
 
   <div id="toast" class="toast"></div>
   <script type="module" src="/js/publish.js"></script>

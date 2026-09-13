@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Rex Store — App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;750;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
@@ -13,9 +13,9 @@
     <div class="container header-inner" style="padding:14px 0">
       <a class="brand" href="/">
         <div class="brand-mark">R</div>
-        <div class="brand-text"><strong>Rex Store</strong><span>Android • Premium</span></div>
+        <div class="brand-text"><strong>Rex Store</strong><span>Black & White</span></div>
       </a>
-      <a class="btn btn-ghost btn-small" href="/">← Back to store</a>
+      <a class="btn btn-ghost btn-small" href="/">← Store</a>
     </div>
   </header>
 
@@ -27,24 +27,25 @@
 
     <div class="detail-grid">
       <div class="panel" id="descPanel" style="display:none">
-        <h3>About this app</h3>
+        <h3>About</h3>
         <p id="appDesc"></p>
-        <h3 style="margin-top:16px">What's New</h3>
+        <h3 style="margin-top:18px">What’s New</h3>
         <div id="whatsNew" class="changelog"></div>
-        <h3 style="margin-top:16px">Screenshots</h3>
+        <h3 style="margin-top:18px">Screenshots</h3>
         <div id="screenshots" class="screenshots"></div>
       </div>
       <div class="panel" id="infoPanel" style="display:none">
-        <h3>App info</h3>
+        <h3>Information</h3>
         <div id="infoList" class="info-list"></div>
-        <a id="downloadBtn2" class="btn btn-primary" style="width:100%;margin-top:14px;height:48px" href="#" download>⬇ Download APK</a>
-        <p class="hint" style="margin-top:8px;text-align:center">APK served via GitHub Releases • Verified & versioned</p>
+        <a id="downloadBtn2" class="btn btn-primary" style="width:100%;margin-top:16px;height:48px;font-size:.92rem" href="#" download>⬇ Download APK</a>
+        <p class="hint" style="margin-top:10px;text-align:center">APK via GitHub Releases • Direct download • No tracking</p>
+        <div id="viewStoreLink" style="margin-top:10px;text-align:center"></div>
       </div>
     </div>
 
     <div id="notFound" class="empty" style="display:none;margin-top:16px">
       <strong>App not found</strong>
-      <p style="margin:6px 0 12px">The app you’re looking for doesn’t exist or was removed.</p>
+      <p style="margin:6px 0 12px">This app was removed or never published. Only dashboards publish apps.</p>
       <a class="btn btn-ghost" href="/">Go back home</a>
     </div>
   </main>
