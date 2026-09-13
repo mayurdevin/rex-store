@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": "arc-browser",
+    "name": "Arc Browser",
+    "version": "1.0.1",
+    "category": "Tools",
+    "shortDesc": "Light Weight Browser.",
+    "description": "Lja",
+    "whatsNew": "Jaj ja",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4e6.png",
+    "screenshots": [],
+    "apkUrl": "https://github.com/mayurdevin/rex-store/releases/download/arc-browser-v1.0.1/acr.browser.lightning_101.apk",
+    "size": "3.27MB",
+    "featured": false,
+    "updatedAt": "2026-09-13"
+  }
+]
