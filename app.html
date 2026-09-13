@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Rex Store — App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner" style="padding:14px 0">
+      <a class="brand" href="/">
+        <div class="brand-mark">R</div>
+        <div class="brand-text"><strong>Rex Store</strong><span>Android • Premium</span></div>
+      </a>
+      <a class="btn btn-ghost btn-small" href="/">← Back to store</a>
+    </div>
+  </header>
+
+  <main class="container detail">
+    <nav class="breadcrumbs"><a href="/">Home</a> <span>›</span> <span id="crumbName">App</span></nav>
+
+    <div id="detailHero" class="detail-hero" style="display:none"></div>
+    <div id="detailSkeleton" class="skeleton" style="height:140px"></div>
+
+    <div class="detail-grid">
+      <div class="panel" id="descPanel" style="display:none">
+        <h3>About this app</h3>
+        <p id="appDesc"></p>
+        <h3 style="margin-top:16px">What's New</h3>
+        <div id="whatsNew" class="changelog"></div>
+        <h3 style="margin-top:16px">Screenshots</h3>
+        <div id="screenshots" class="screenshots"></div>
+      </div>
+      <div class="panel" id="infoPanel" style="display:none">
+        <h3>App info</h3>
+        <div id="infoList" class="info-list"></div>
+        <a id="downloadBtn2" class="btn btn-primary" style="width:100%;margin-top:14px;height:48px" href="#" download>⬇ Download APK</a>
+        <p class="hint" style="margin-top:8px;text-align:center">APK served via GitHub Releases • Verified & versioned</p>
+      </div>
+    </div>
+
+    <div id="notFound" class="empty" style="display:none;margin-top:16px">
+      <strong>App not found</strong>
+      <p style="margin:6px 0 12px">The app you’re looking for doesn’t exist or was removed.</p>
+      <a class="btn btn-ghost" href="/">Go back home</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 Rex Store</span>
+      <span><a href="/">Store</a> • <a href="/publish/">Publish</a></span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/js/app-detail.js"></script>
+</body>
+</html>

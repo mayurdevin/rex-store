@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Rex Store — Publish</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <div class="brand-mark">R</div>
+        <div class="brand-text"><strong>Rex Store</strong><span>Publish Dashboard</span></div>
+      </a>
+      <div class="header-actions">
+        <a class="btn btn-ghost btn-small" href="/">← Store</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container publish">
+    <div class="publish-hero">
+      <span class="badge">Private • GitHub Releases • Server-side token</span>
+      <h1>Publish an app to Rex Store</h1>
+      <p>Upload your APK → we create a GitHub Release, attach the APK as an asset, upload icons/screenshots, and update <code>apps.json</code>. The store updates automatically. Your <code>GITHUB_TOKEN</code> never leaves the server.</p>
+    </div>
+
+    <form id="publishForm" class="form-grid" novalidate>
+      <div class="card-form">
+        <h3>App details</h3>
+
+        <div class="field">
+          <label for="appName">App name *</label>
+          <input id="appName" name="name" placeholder="e.g. Nova Launcher Prime" required maxlength="60" />
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field">
+            <label for="version">Version *</label>
+            <input id="version" name="version" placeholder="e.g. 1.0.0" required pattern="^[0-9]+\.[0-9]+\.[0-9]+.*$" />
+            <span class="hint">Semver — tag will be <code>slug-v1.0.0</code></span>
+          </div>
+          <div class="field">
+            <label for="category">Category *</label>
+            <select id="category" name="category" required>
+              <option value="">Select…</option>
+              <option>Personalization</option>
+              <option>Photography</option>
+              <option>Productivity</option>
+              <option>Music</option>
+              <option>Health</option>
+              <option>Security</option>
+              <option>Tools</option>
+              <option>Entertainment</option>
+              <option>Social</option>
+              <option>Finance</option>
+              <option>Games</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="shortDesc">Short description *</label>
+          <input id="shortDesc" name="shortDesc" placeholder="One-line pitch — shows on cards" required maxlength="120" />
+        </div>
+
+        <div class="field">
+          <label for="description">Full description *</label>
+          <textarea id="description" name="description" placeholder="Detailed description for the app detail page…" required maxlength="3000"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="whatsNew">What's New *</label>
+          <textarea id="whatsNew" name="whatsNew" placeholder="• New feature&#10;• Bug fixes&#10;• Performance improvements" required></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field">
+            <label for="size">Size (optional)</label>
+            <input id="size" name="size" placeholder="e.g. 18.4 MB" />
+          </div>
+          <div class="field">
+            <label for="publishKey">Publish key (if set)</label>
+            <input id="publishKey" type="password" placeholder="PUBLISH_KEY env var" autocomplete="off" />
+            <span class="hint">Leave empty if not configured</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-form">
+        <h3>Files</h3>
+
+        <div class="field">
+          <label>APK file * <span class="hint">— stored as GitHub Release asset</span></label>
+          <label class="drop" id="apkDrop">
+            <strong>Drop APK here or click to browse</strong>
+            <span class="hint">.apk only • Netlify Free: ~6 MB limit, Pro: larger</span>
+            <input id="apkFile" type="file" accept=".apk,application/vnd.android.package-archive" required />
+            <div id="apkName" class="hint" style="margin-top:8px;color:var(--accent)"></div>
+          </label>
+          <div id="apkProgress" class="progress"><div id="apkBar"></div></div>
+        </div>
+
+        <div class="field">
+          <label>App icon <span class="hint">— PNG/WebP, 512×512 recommended</span></label>
+          <label class="drop" id="iconDrop">
+            <strong>Drop icon or click</strong>
+            <span class="hint">Optional — placeholder used if empty</span>
+            <input id="iconFile" type="file" accept="image/*" />
+          </label>
+          <div id="iconPreview" class="preview"><img id="iconPreviewImg" alt="icon preview"/></div>
+        </div>
+
+        <div class="field">
+          <label>Screenshots <span class="hint">— up to 6, PNG/JPG</span></label>
+          <label class="drop" id="shotsDrop">
+            <strong>Drop screenshots or click</strong>
+            <span class="hint">Optional — shown as carousel</span>
+            <input id="shotsFiles" type="file" accept="image/*" multiple />
+          </label>
+          <div id="shotsPreview" class="screens-preview"></div>
+        </div>
+
+        <div id="alertSuccess" class="alert success"></div>
+        <div id="alertError" class="alert error"></div>
+
+        <div class="publish-actions">
+          <button id="submitBtn" type="submit" class="btn btn-primary" style="flex:1">🚀 Publish to GitHub</button>
+          <button type="button" id="resetBtn" class="btn btn-ghost">Reset</button>
+        </div>
+        <div id="progressWrap" class="progress" style="display:none"><div id="progressBar"></div></div>
+        <p class="hint" style="margin-top:10px">Flow: Create Release → Upload APK asset → Upload images → Update <code>data/apps.json</code> → Live on store.</p>
+      </div>
+    </form>
+
+    <div class="panel" style="margin-top:14px">
+      <h3>How it works (technical)</h3>
+      <ol style="margin:0;padding-left:18px;color:var(--muted);line-height:1.7;font-size:.88rem">
+        <li>Frontend converts APK/icon/screenshots to base64 and POSTs JSON to <code>/.netlify/functions/publish</code>.</li>
+        <li>Function (server-only) uses <code>GITHUB_TOKEN</code> from env to call GitHub API: <code>POST /repos/:owner/:repo/releases</code> to create a release with tag <code>app-id-vX.Y.Z</code>.</li>
+        <li>Uploads APK binary to <code>https://uploads.github.com/.../assets?name=app.apk</code> — response gives <code>browser_download_url</code>.</li>
+        <li>Uploads icon/screenshots via Contents API to <code>images/apps/&lt;id&gt;/</code> and builds raw URLs.</li>
+        <li>Fetches, merges, and commits updated <code>data/apps.json</code> via Contents API. Next page load shows the app.</li>
+        <li>Token never exposed to browser; all GitHub calls are in the Function.</li>
+      </ol>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/js/publish.js"></script>
+</body>
+</html>

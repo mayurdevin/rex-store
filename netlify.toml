@@ -1,0 +1,28 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  # Included files for functions (none needed — fetch is native)
+
+# API CORS headers for functions
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, x-publish-key"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300"
+
+# No SPA fallback — we use real files for / and /app.html and /publish/
+# If you want SPA-style routes, add explicit redirects below
+# [[redirects]]
+#   from = "/app/*"
+#   to = "/app.html"
+#   status = 200

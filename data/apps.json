@@ -1,0 +1,111 @@
+[
+  {
+    "id": "nova-launcher-prime",
+    "name": "Nova Launcher Prime",
+    "version": "8.0.15",
+    "category": "Personalization",
+    "shortDesc": "The highly customizable, performance-driven home screen.",
+    "description": "Nova Launcher Prime is the ultimate customizable launcher. Replace your home screen with one you control and can customize. Change icons, layouts, animations and more. Nova Launcher delivers a highly polished, fast and responsive experience with endless customization options.",
+    "whatsNew": "• Android 14 support\n• New drawer animations\n• Fixed widget padding on foldables\n• Performance improvements",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f680.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1512941937669-90a1b58e7dfb?w=800&q=80",
+      "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/nova-launcher-prime-v8.0.15/app.apk",
+    "size": "12.4 MB",
+    "featured": true,
+    "updatedAt": "2026-09-10"
+  },
+  {
+    "id": "pixel-camera-pro",
+    "name": "Pixel Camera Pro",
+    "version": "9.2.1",
+    "category": "Photography",
+    "shortDesc": "Professional camera with AI enhancements and manual controls.",
+    "description": "Pixel Camera Pro brings DSLR-like controls to your phone. Shoot in RAW, master manual focus, shutter speed and ISO. AI-powered Night Sight, Portrait and HDR+ take your photos to the next level. Designed for creators who demand perfect shots.",
+    "whatsNew": "• Added ProRAW format\n• New cinematic blur controls\n• Improved low-light processing\n• 8K video stabilization",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4f7.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80",
+      "https://images.unsplash.com/photo-1452780212940-6f5c84d207f1?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/pixel-camera-pro-v9.2.1/app.apk",
+    "size": "28.7 MB",
+    "featured": true,
+    "updatedAt": "2026-09-08"
+  },
+  {
+    "id": "vault-secure",
+    "name": "Vault Secure",
+    "version": "4.1.0",
+    "category": "Security",
+    "shortDesc": "Military-grade vault for photos, videos & private apps.",
+    "description": "Vault Secure protects your privacy with AES-256 encryption. Hide photos, videos, lock apps with fingerprint, and get intrusion alerts. Decoy vault and break-in snapshots keep your data truly private even if someone knows your PIN.",
+    "whatsNew": "• Intrusion selfie v2\n• Decoy vault added\n• Fingerprint unlock fix",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f512.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80",
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/vault-secure-v4.1.0/app.apk",
+    "size": "9.2 MB",
+    "featured": false,
+    "updatedAt": "2026-09-05"
+  },
+  {
+    "id": "beatflow-music",
+    "name": "BeatFlow Music",
+    "version": "3.6.2",
+    "category": "Music",
+    "shortDesc": "Offline music player with equalizer and lyrics sync.",
+    "description": "BeatFlow is a lightweight offline music player built for audiophiles. 10-band equalizer, gapless playback, synced lyrics, and beautiful adaptive themes. No ads, no tracking — just your music.",
+    "whatsNew": "• Gapless playback fix\n• Synced lyrics for 50M+ songs\n• New AMOLED black theme",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3b5.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+      "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/beatflow-music-v3.6.2/app.apk",
+    "size": "15.1 MB",
+    "featured": false,
+    "updatedAt": "2026-09-01"
+  },
+  {
+    "id": "fitpulse-pro",
+    "name": "FitPulse Pro",
+    "version": "2.9.4",
+    "category": "Health",
+    "shortDesc": "Track workouts, diet & sleep — all offline.",
+    "description": "FitPulse Pro is your all-in-one offline fitness companion. Log workouts, count calories with barcode scanner, track sleep cycles, and get AI coaching. Syncs with Wear OS and Mi Band without needing cloud.",
+    "whatsNew": "• Wear OS 4 support\n• Calorie barcode scanner\n• Sleep score improvements",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4aa.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/fitpulse-pro-v2.9.4/app.apk",
+    "size": "22.3 MB",
+    "featured": true,
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "tasknova",
+    "name": "TaskNova",
+    "version": "1.4.8",
+    "category": "Productivity",
+    "shortDesc": "Minimal todo & habit tracker with widgets.",
+    "description": "TaskNova keeps you focused. Minimal design, powerful features: natural language input, recurring tasks, Kanban board, calendar sync, home-screen widgets, and Pomodoro timer — all in under 8 MB.",
+    "whatsNew": "• Natural language: 'tomorrow 5pm'\n• Kanban board view\n• Pomodoro timer widget",
+    "icon": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2705.png",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80",
+      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80"
+    ],
+    "apkUrl": "https://github.com/example/rex-store/releases/download/tasknova-v1.4.8/app.apk",
+    "size": "7.8 MB",
+    "featured": false,
+    "updatedAt": "2026-08-20"
+  }
+]

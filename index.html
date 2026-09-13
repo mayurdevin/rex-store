@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="Rex Store — Premium Android app store. Curated, fast, and secure APK downloads." />
+  <title>Rex Store — Premium Android App Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <div class="brand-mark">R</div>
+        <div class="brand-text">
+          <strong>Rex Store</strong>
+          <span>Android • Premium</span>
+        </div>
+      </a>
+      <label class="search-wrap" aria-label="Search apps">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchDesktop" type="search" placeholder="Search apps, categories…" autocomplete="off" />
+      </label>
+      <div class="header-actions">
+        <span id="appCount" class="pill" style="display:none"></span>
+        <a class="icon-btn" href="/publish/" aria-label="Publish" title="Publish">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="container mobile-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchMobile" type="search" placeholder="Search apps…" autocomplete="off" />
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div>
+            <span class="badge">✦ Premium • No ads • Verified APKs</span>
+            <h1>Discover premium Android apps — fast, secure, curated.</h1>
+            <p>Rex Store is a mobile-first, hand-picked collection. Every APK is delivered via GitHub Releases — transparent, versioned, and directly downloadable.</p>
+            <div class="hero-stats">
+              <div class="stat"><strong id="statTotal">—</strong><span>Total apps</span></div>
+              <div class="stat"><strong id="statCategories">—</strong><span>Categories</span></div>
+              <div class="stat"><strong id="statUpdated">—</strong><span>Latest update</span></div>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=900&q=80" alt="" loading="eager" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div id="filterPills" class="filter-pills"></div>
+      <span id="resultCount" class="count"></span>
+      <select id="sortSelect" class="sort" aria-label="Sort">
+        <option value="updated">Latest updated</option>
+        <option value="name">Name A–Z</option>
+        <option value="category">Category</option>
+      </select>
+    </section>
+
+    <section id="featuredSection" class="section" style="display:none">
+      <div class="section-head">
+        <h2>Featured</h2>
+        <p>Hand-picked by Rex</p>
+      </div>
+      <div id="featuredGrid" class="featured-grid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 id="latestTitle">Latest apps</h2>
+        <p id="latestSubtitle">Fresh drops — updated via GitHub</p>
+      </div>
+      <div id="appGrid" class="grid"></div>
+      <div id="emptyState" class="empty" style="display:none">
+        <strong>No apps found</strong>
+        <p style="margin:6px 0 0">Try a different search or category.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2026 Rex Store • Built for Android • APKs served via GitHub Releases</span>
+      <span><a href="/publish/">Publish dashboard</a> • <a href="/data/apps.json" target="_blank" rel="noopener">apps.json</a></span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="/js/store.js"></script>
+</body>
+</html>
